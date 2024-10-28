@@ -30,7 +30,7 @@ func main() {
 		Name:     "Component-Manager",
 		HelpName: "cm",
 		Usage:    "a tool for managing JS/TS components and modules.",
-		Version:  "v1.5.6",
+		Version:  "v1.5.7",
 		Commands: []*cli.Command{
 			{
 				Name:    "version",
