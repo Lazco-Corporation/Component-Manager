@@ -8,6 +8,9 @@ import (
 
 func Version(ctx *cli.Context) error {
 	cli.ShowVersion(ctx)
-	module.CheckRemoteVersion(ctx, false)
+	var _, err = module.CheckRemoteVersion(ctx, false)
+	if err != nil {
+		return err
+	}
 	return nil
 }

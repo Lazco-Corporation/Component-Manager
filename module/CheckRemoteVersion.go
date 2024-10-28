@@ -1,6 +1,7 @@
 package module
 
 import (
+	"errors"
 	"io"
 	"net/http"
 	"regexp"
@@ -17,14 +18,14 @@ func CheckRemoteVersion(ctx *cli.Context, muteUpToDate bool) (bool, error) {
 	// Fetch the raw content
 	resp, err := http.Get(url)
 	if err != nil {
-		panic(err)
+		return false, errors.New("no internet connection")
 	}
 	defer resp.Body.Close()
 
 	// Read the content
 	content, err := io.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return false, err
 	}
 
 	// Define a regex pattern to find the version
