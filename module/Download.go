@@ -1,8 +1,8 @@
 package module
 
 import (
+	"errors"
 	"fmt"
-	"log"
 	"path/filepath"
 	"time"
 
@@ -12,7 +12,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 )
 
-func Download(url string, destination string) string {
+func Download(url string, destination string) (string, error) {
 	client := grab.NewClient()
 	req, _ := grab.NewRequest(destination, url)
 
@@ -22,15 +22,16 @@ func Download(url string, destination string) string {
 
 	fmt.Printf("Package source: ")
 	color.Cyanln(req.URL())
+
+	if err := resp.Err(); err != nil {
+		return "", errors.New("no internet connection")
+	}
+
 	fmt.Printf("Saving as:      ")
 	color.Cyanln(fileName)
 	ProgressBar(resp)
 
-	if err := resp.Err(); err != nil {
-		log.Fatal("Download failed")
-	}
-
-	return filePath
+	return filePath, nil
 }
 
 func ProgressBar(resp *grab.Response) {
@@ -43,7 +44,7 @@ func ProgressBar(resp *grab.Response) {
 
 	bar := progressbar.NewOptions(
 		int(resp.Size()),
-		progressbar.OptionSetWriter(ansi.NewAnsiStdout()), //you should install "github.com/k0kubun/go-ansi"
+		progressbar.OptionSetWriter(ansi.NewAnsiStdout()),
 		progressbar.OptionEnableColorCodes(true),
 		progressbar.OptionSpinnerType(1),
 		progressbar.OptionShowBytes(true),

@@ -11,7 +11,7 @@ import (
 	"Component-Manager/module"
 )
 
-func DownloadScript() string {
+func DownloadScript() (string, error) {
 	tempDir := os.TempDir()
 	var scriptURL string
 
@@ -20,14 +20,20 @@ func DownloadScript() string {
 	} else {
 		scriptURL = "https://short.on-cloud.tw/cm-install-script"
 	}
-	scriptDir := module.Download(scriptURL, filepath.Join(tempDir, "cm-install-script"))
+	scriptDir, err := module.Download(scriptURL, filepath.Join(tempDir, "cm-install-script"))
+	if err != nil {
+		return "", err
+	}
 	os.Chmod(scriptDir, 0755)
 
-	return scriptDir
+	return scriptDir, nil
 }
 
 func Update(ctx *cli.Context) error {
-	scriptDir := DownloadScript()
+	scriptDir, err := DownloadScript()
+	if err != nil {
+		return err
+	}
 	cmd := exec.Command(scriptDir)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
