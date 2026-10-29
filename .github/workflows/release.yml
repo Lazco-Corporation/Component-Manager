@@ -31,8 +31,8 @@ jobs:
     name: Build and compress binary
     needs: [check]
     if: ${{ needs.check.outputs.commit_message != '' }}
-    # A public repo: Boat refuses its jobs, and GitHub-hosted runners are free for it.
-    runs-on: ubuntu-latest
+    # A public repo: Boat refuses its jobs, so it takes the smallest Blacksmith runner.
+    runs-on: blacksmith-2vcpu-ubuntu-2204
 
     steps:
     - name: Checkout code
