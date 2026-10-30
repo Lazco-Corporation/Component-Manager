@@ -8,7 +8,7 @@ on:
 jobs:
   check:
     name: Check commit message
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       commit_message: ${{ steps.check_commit_message.outputs.commit_message }}
 
@@ -32,7 +32,7 @@ jobs:
     needs: [check]
     if: ${{ needs.check.outputs.commit_message != '' }}
     # A public repo: Boat refuses its jobs, and GitHub-hosted runners are free for it.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout code
@@ -97,7 +97,7 @@ jobs:
     name: Create release and upload asset
     needs: [check, build]
     if: ${{ needs.check.outputs.commit_message != '' }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions: write-all
 
     steps:
