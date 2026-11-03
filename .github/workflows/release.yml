@@ -31,7 +31,7 @@ jobs:
     name: Build and compress binary
     needs: [check]
     if: ${{ needs.check.outputs.commit_message != '' }}
-    # A public repo: Boat refuses its jobs, and GitHub-hosted runners are free for it.
+    # A public repo, so GitHub-hosted runners are free for it.
     runs-on: ubuntu-24.04
 
     steps:
